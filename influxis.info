@@ -2,7 +2,6 @@ name = Influxis
 description = Upload Video to Influxis using Influxis API
 core = 7.x
 stylesheets[all][] = influxis.css
-scripts[] = influxis.js
 dependencies[] = flowplayer5
 files[] = influxis.field.inc
 files[] = influxis.admin.inc
