@@ -4,7 +4,7 @@
  * Influxis module file
  * 
  * Module handles uploading viewing and deleting files from Influxis API
- * Most hooks are grouped with similar hooks in seperate files this file includes those files
+ * Most hooks are grouped with similar hooks in separate files this file includes those files
  * and provides a couple of additional hooks
  */
 

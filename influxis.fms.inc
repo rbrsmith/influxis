@@ -86,9 +86,6 @@ class influxis {
    public function getSibling($id) {
       $this->setPost(FALSE);
       $this->setDelete(FALSE);
-      $data = array(
-         "SiblingEncodeId" => $id, 
-      );
       $res = $this->call_api("/sibling?SiblingEncodeId=" . $id);
       $curl = json_decode($res->curl_exec);
       $response = new stdclass;
@@ -179,7 +176,7 @@ class influxis {
       //call exec to make the token curl async
       //this is done due to the timeout on browsers when waiting for this api call to complete
       //especially on browsers passing via proxy
-      $exec = exec($command);
+      exec($command);
 
       $response = new stdClass;
       $response->success = TRUE;
@@ -201,6 +198,7 @@ class influxis {
          'Influxis-Upload-Token: ' . $token,
       ));
 
+      $result = new StdClass;      
       // Get the response and close the channel.
       $result->curl_exec = curl_exec($ch);
       $result->httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -277,8 +275,7 @@ class influxis {
       $response->success = FALSE;
       $url = $this->base_url . $service_name;
 
-      $contentLength = strlen($post_data);
-
+      //$contentLength = strlen($post_data);
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_URL, $url);
       // Override the default headers

@@ -114,7 +114,6 @@ function influxis_field_formatter_info() {
  */
 function influxis_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
-  $settings = $display['settings'];
   foreach ($items as $delta => $item) {
     switch ($display['type']) {
       case 'influxis_formatter_player':
@@ -184,7 +183,7 @@ function influxis_field_update($entity_type, $entity, $field, $instance, $langco
   $new_fids = array();
   foreach ($items as $item) {
     array_push($new_fids, $item['fid']);
-    //check to see if video is alreayd in db
+    //check to see if video is already in db
     $results = _influxis_get_records(array(
       array("fid", $item['fid'], '='),
       array("nid", $nid, '=')
@@ -199,7 +198,7 @@ function influxis_field_update($entity_type, $entity, $field, $instance, $langco
   }
 
   if (!empty($original->{$field['field_name']})) {
-    $original_fid = $original->{$field['field_name']}['und'][0]['fid'];
+    $original_fid = $original->{$field['field_name']}[LANGUAGE_NONE][0]['fid'];
     if (!in_array($original_fid, $new_fids)) {
       foreach ($original->{$field['field_name']}[$langcode] as $item) {
         if ($item['fid'] == $original_fid) {

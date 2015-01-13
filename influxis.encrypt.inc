@@ -4,7 +4,7 @@
  * @file
  * File used to encrypt influxis account password
  */
-class Encrypt {
+class influxis_encrypt {
 
   private $key = "thuwre3A";
 

@@ -97,7 +97,6 @@ function influxis_encoding_settings() {
 
 
   ////////////////////BASE ENCODING////////////////////////
-
   $form['basic']['influxis_state_data'] = array(
     '#type' => 'textfield',
     '#title' => t('State Data'),
@@ -274,7 +273,6 @@ function influxis_encoding_settings() {
 
 
   ////////////////////H264 ENCODING////////////////////////
-
   $form['H264']['influxis_use_h264_settings'] = array(
     '#type' => 'checkbox',
     '#title' => t('Click here to enable the additional H264 settings.'),
@@ -492,7 +490,7 @@ function influxis_encoding_settings() {
 
   $form['H264']['influxis_partitions'] = array(
     '#type' => 'textfield',
-    '#title' => t('Paritions seperated by comma (ex: i4x4", "i8x8", "p8x8", "b8x8")'),
+    '#title' => t('Paritions separated by comma (ex: i4x4", "i8x8", "p8x8", "b8x8")'),
     '#size' => 10,
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_partitions'),
@@ -609,8 +607,6 @@ function influxis_encoding_settings() {
 
 
   ////////////////////VPX ENCODING////////////////////////
-
-
   $form['VPX']['influxis_use_vp8_settings'] = array(
     '#type' => 'checkbox',
     '#title' => t('Click here to enable the additional VP8 settings.'),
@@ -785,7 +781,7 @@ function influxis_account_settings_submit(&$form, &$form_state) {
   variable_set('influxis_videourl', $form_state['values']['influxis_videourl']);
 
   if ($form_state['values']['influxis_password'] != '') {
-    $encrypt = new Encrypt();
+    $encrypt = new influxis_encrypt();
     $protected = $encrypt->protect($form_state['values']['influxis_password']);
     if ($protected === FALSE) {
       _influxis_error("Unable to save password using mcrypt.  Ensure mcrypt is installed on server.");
