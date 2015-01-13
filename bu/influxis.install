@@ -1,0 +1,134 @@
+<?php 
+/*
+ * hook_field_schema()
+ */
+function influxis_field_schema($field) {
+	return array(
+			'columns' => array(
+				'fid' => array(
+					'description' => 'The File Id being referenced in this field',
+					'type' => 'int',
+					'not null' =>FALSE,
+					'unsigned' => TRUE,
+				),
+			),
+			'indexes' => array(
+				'fid' => array('fid'),
+			),
+			'foreign keys' => array(
+				'fid' => array(
+					'table' => 'file_managed',
+					'columns' => array('fid'=>'fid'),
+				)
+			)
+	);	
+}
+
+/*
+ * hook_install()
+ */
+function influxis_install() {
+	$directory = file_default_scheme() . '://influxis';
+	file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+}
+
+/*
+ * hook_influxis_schema()
+ */
+function influxis_schema() {
+	$db_table_name = 'influxis';
+	variable_set('influxis_db', $db_table_name);
+	$schema['influxis'] = array(
+		'description' => t('Table holding influxis details'),
+		'fields' => array(
+			'fid' => array(
+				'description' => 'The File Id of the file being uplaoded',
+				'type' => 'int',
+				'not null' => TRUE,
+				'unsigned' =>TRUE,
+			),
+			'nid' => array(
+				'description' => 'The Node Id of the file being uplaoded',
+				'type' => 'int',
+				'not null' => TRUE,
+				'unsigned' =>TRUE,
+			),
+			'status' => array(
+				'description' => 'Status identifier of the file with influxis',
+				'type' => 'int',
+				'not null' => TRUE,
+				'unsigned' => TRUE,
+			),
+			'source' => array(
+				'description' => 'Influxis Source Media ID',
+				'type' => 'int',
+				'not null' => FALSE,
+				'unsigned' => TRUE,
+			),
+			'job' => array(
+				'description' => 'Influxis Job Media ID',
+				'type' => 'int',
+				'not null' => FALSE,
+				'unsigned' => TRUE,
+			),
+			'media' => array(
+				'description' => 'Influxis Encoded Media ID',
+				'type' => 'int',
+				'not null' => FALSE,
+				'unsigned' => TRUE,
+			),
+			'sibling' => array(
+				'description' => 'Influxis Sibling ID',
+				'type' => 'int',
+				'not null' => FALSE,
+				'unsigned' => TRUE,
+			),
+			'httpUrl' => array(
+				'description' => 'HTTP Url',
+				'type' => 'varchar',
+				'not null' => FALSE,
+				'length' => 255,
+				'default' => 0,
+			),
+			'rtmpUrl' => array(
+				'description' => 'RTMP Url',
+				'type' => 'varchar',
+				'not null' => FALSE,
+				'length' => 255,
+				'default' => 0,
+			),
+		),
+		'indexes' => array(
+			'fid' => array('fid'),
+		),
+		'foreign keys' => array(
+			'fid' => array(
+				'table' => 'file_managed',
+				'columns' => array('fid'=>'fid'),
+			),
+			'nid' => array(
+				'table' => 'node',
+				'columns' => array('nid'=>'nid'),
+			)
+		), 
+		'primary key' => array('fid'),
+	);
+	return $schema;
+}
+
+/*
+ * hook_uninstall()
+ */
+function influxis_uninstall() {
+	$results = db_select("variable", "v")
+		->fields("v", array("name"))
+		->condition("name", '%'.db_like("influxis").'%', "LIKE")
+		->execute();
+	
+	while($record = $results->fetchAssoc()) {
+    	variable_del($record['name']);
+	}
+}
+
+?>
+

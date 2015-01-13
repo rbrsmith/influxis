@@ -135,7 +135,7 @@ function influxis_field_formatter_view($entity_type, $entity, $field, $instance,
         //its not completed
         if ($record->status != 3) {
           $video = "<div class='influxis-status'>Video unavailable.  Status:  " . $fms->getProcess($record->status) . "</div>";
-        } 
+        }
         else {
           $config = array(
             'playlist' => array(
