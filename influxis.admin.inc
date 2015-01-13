@@ -5,8 +5,6 @@
  * 
  */
 
-
-
 /*
  * General page for admin settings
  */
@@ -789,8 +787,14 @@ function influxis_account_settings_submit(&$form, &$form_state) {
   if ($form_state['values']['influxis_password'] != '') {
     $encrypt = new Encrypt();
     $protected = $encrypt->protect($form_state['values']['influxis_password']);
-    variable_set('influxis_password', $protected);
-    //$raw = $encrypt->reveal($protected);
+    if ($protected === FALSE) {
+      _influxis_error("Unable to save password using mcrypt.  Ensure mcrypt is installed on server.");
+      return;
+    }
+    else {
+      variable_set('influxis_password', $protected);
+      //$raw = $encrypt->reveal($protected);
+    }
   }
   drupal_set_message(t("Account Settings Saved"));
 }
@@ -803,6 +807,7 @@ function influxis_status_form($form = array(), $form_state) {
   $rows = array('#tree' => TRUE);
   $fms = _influxis_();
   $all_complete = TRUE;
+  if ($fms == NULL) return;
   //get all videos
   $results = _influxis_update_videos();
   $hide_complete = variable_get('influxis_hide_completed');

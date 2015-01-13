@@ -12,6 +12,7 @@
 function _influxis_() {
   $username =  variable_get('influxis_username');
   $password_enc = variable_get('influxis_password');
+ // if (!$password_enc) return NULL;
   $base = variable_get('influxis_baseurl');
   $video = variable_get('influxis_videourl');
   if ($username == NULL || $password_enc == NULL || $base == NULL || $video == NULL) {
@@ -21,7 +22,13 @@ function _influxis_() {
   else {
     $encrypt = new Encrypt();
     $raw = $encrypt->reveal($password_enc);
-    return influxis::getInstance($username, $raw, $base, $video);
+    if ($raw === FALSE) {
+      _influxis_error("Cannot load influxis, could not save password.  Please ensure mcrypt is enabled on server.");
+      return NULL;
+    }
+    else {
+      return influxis::getInstance($username, $raw, $base, $video);
+    }
   }
 }
 

@@ -18,7 +18,11 @@ class influxis {
   private $process;
   static private $instance;
 
-  public function __construct($user, $pass, $base, $video) {
+  /*
+   * Constructor
+   * @param:  string user
+   */
+  private function __construct($user, $pass, $base, $video) {
     $this->credentials = $user . ":" . $pass;
     $this->base_url = $base;
     $this->video_url = $video;

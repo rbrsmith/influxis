@@ -8,7 +8,13 @@ class Encrypt {
 
   private $key = "thuwre3A";
 
+  /*
+   * Proect string
+   */  
   public function protect($data) {
+    if (!$this->checkMcrypt()) {
+      return FALSE;
+    }
     $td = mcrypt_module_open('tripledes', '', 'ecb', '');
     $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
     mcrypt_generic_init($td, $this->key, $iv);
@@ -18,7 +24,13 @@ class Encrypt {
     return $encrypted_data;
   }
 
+  /*
+   * Reveal protected string
+   */  
   public function reveal($protected) {
+    if (!$this->checkMcrypt()) {
+      return FALSE;
+    }
     $td = mcrypt_module_open('tripledes', '', 'ecb', '');
     $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
     mcrypt_generic_init($td, $this->key, $iv);
@@ -28,4 +40,16 @@ class Encrypt {
     return $raw;
   }
 
+  /*
+   *  Check mcyrpt exsists 
+   */
+  private function checkMcrypt() {
+    if (function_exists("mcrypt_encrypt")) {
+      return TRUE;
+    }
+    else {
+      return FALSE;
+    }
+  }
+  
 }
