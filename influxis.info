@@ -1,1 +1,10 @@
 name = Influxis
+description = Upload Video to Influxis using Influxis API
+core = 7.x
+stylesheets[all][] = influxis.css
+dependencies[] = flowplayer5
+files[] = influxis.field.inc
+files[] = influxis.admin.inc
+files[] = influxis.encrypt.inc
+files[] = influxis.fms.inc
+files[] = influxis_hander_filter_influxis_status.inc
