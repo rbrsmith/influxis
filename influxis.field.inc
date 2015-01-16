@@ -1,12 +1,12 @@
-<?php 
+<?php
 
-/*
+/**
  * @file
  * File used to group all field hooks together
- * Module creates an influxis video upload hook 
+ * Module creates an influxis video upload hook
  */
 
-/*
+/**
  * hook_field_info()
  */
 function influxis_field_info() {
@@ -29,7 +29,7 @@ function influxis_field_info() {
 
 }
 
-/*
+/**
  * hook_field_widget_info()
  */
 function influxis_field_widget_info() {
@@ -48,17 +48,17 @@ function influxis_field_widget_info() {
   );
 }
 
-/*
+/**
  * hook_field_widget_form()
  */
 function influxis_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-  //error if this is not set
+  //Error if this is not set.
   $field['settings']['display_field'] = 0;
   $elements = file_field_widget_form($form, $form_state, $field, $instance, $langcode, $items, $delta, $element);
   return $elements;
 }
 
-/*
+/**
  * hook_field_settings_form()
  */
 function influxis_field_settings_form($field, $instance, $has_data) {
@@ -79,7 +79,7 @@ function influxis_field_settings_form($field, $instance, $has_data) {
   return $form;
 }
 
-/*
+/**
  * hook_field_instance_settings_form
  */
 function influxis_field_instance_settings_form(array $field, array $instance) {
@@ -89,18 +89,18 @@ function influxis_field_instance_settings_form(array $field, array $instance) {
 }
 
 
-/*
+/**
  * hook_field_is_empty()
  */
 function influxis_field_is_empty($item, $field) {
   return file_field_is_empty($item, $field);
 }
 
-/*
+/**
  * hook_field_formatter_info()
  */
 function influxis_field_formatter_info() {
-  //define two formatter, the player and embed code
+  // Define two formatter, the player and embed code.
   return array(
     'influxis_formatter_player' => array(
       'label' => t('Influxis Video'),
@@ -109,12 +109,11 @@ function influxis_field_formatter_info() {
   );
 }
 
-/*
+/**
  * hook_field_formatter_view()
  */
 function influxis_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
-  $settings = $display['settings'];
   foreach ($items as $delta => $item) {
     switch ($display['type']) {
       case 'influxis_formatter_player':
@@ -124,15 +123,15 @@ function influxis_field_formatter_view($entity_type, $entity, $field, $instance,
             return;
         }
 
-        //should only be one record via integrity constraint of db
+        // Should only be one record via integrity constraint of db.
         $record = $results[0];
 
-        //update the video's status
+        // Update the video's status.
         _influxis_update_video($record);
 
         $fms = _influxis_();
         if ($fms == NULL) return NULL;
-        //its not completed
+        // It's not completed.
         if ($record->status != 3) {
           $video = "<div class='influxis-status'>Video unavailable.  Status:  " . $fms->getProcess($record->status) . "</div>";
         }
@@ -140,8 +139,8 @@ function influxis_field_formatter_view($entity_type, $entity, $field, $instance,
           $config = array(
             'playlist' => array(
               'mp4' => $record->httpUrl,
-              ),
-              'ratio' => '3/4',
+            ),
+            'ratio' => '3/4',
           );
           $video = theme('flowplayer5', array('config' => $config, 'id' => 'flowplayer5-influxis', 'attributes' => array('style' => 'width:100%;height:350px;')));
         }
@@ -158,7 +157,7 @@ function influxis_field_formatter_view($entity_type, $entity, $field, $instance,
 }
 
 
-/*
+/**
  * hook_field_insert
  */
 function influxis_field_insert($entity_type, $entity, $field, $instance, $langcode, &$items) {
@@ -171,7 +170,7 @@ function influxis_field_insert($entity_type, $entity, $field, $instance, $langco
   }
 }
 
-/*
+/**
  * hook_field_update
  */
 function influxis_field_update($entity_type, $entity, $field, $instance, $langcode, &$items) {
@@ -184,10 +183,10 @@ function influxis_field_update($entity_type, $entity, $field, $instance, $langco
   $new_fids = array();
   foreach ($items as $item) {
     array_push($new_fids, $item['fid']);
-    //check to see if video is alreayd in db
+    //check to see if video is already in db
     $results = _influxis_get_records(array(
       array("fid", $item['fid'], '='),
-      array("nid", $nid, '=')
+      array("nid", $nid, '='),
     ));
 
     if (sizeof($results) == 0) {
@@ -199,7 +198,7 @@ function influxis_field_update($entity_type, $entity, $field, $instance, $langco
   }
 
   if (!empty($original->{$field['field_name']})) {
-    $original_fid = $original->{$field['field_name']}['und'][0]['fid'];
+    $original_fid = $original->{$field['field_name']}[LANGUAGE_NONE][0]['fid'];
     if (!in_array($original_fid, $new_fids)) {
       foreach ($original->{$field['field_name']}[$langcode] as $item) {
         if ($item['fid'] == $original_fid) {
@@ -214,7 +213,7 @@ function influxis_field_update($entity_type, $entity, $field, $instance, $langco
   }
 }
 
-/*
+/**
  * hook_field_delete()
 */
 function influxis_field_delete($entity_type, &$entity, $field, $instance, $langcode, &$items) {

@@ -1,11 +1,11 @@
 <?php
-/*
+/**
  * @file 
  * File used for administrative settings
  * 
  */
 
-/*
+/**
  * General page for admin settings
  */
 function influxis_settings_page($op = NULL) {
@@ -13,7 +13,7 @@ function influxis_settings_page($op = NULL) {
   return $output;
 }
 
-/*
+/**
  * Returns account settings admin form
  */
 function influxis_account_settings() {
@@ -60,7 +60,7 @@ function influxis_account_settings() {
   return $form;
 }
 
-/*
+/**
  * Returns encoding admin settings
  */
 function influxis_encoding_settings() {
@@ -96,8 +96,7 @@ function influxis_encoding_settings() {
   );
 
 
-  ////////////////////BASE ENCODING////////////////////////
-
+  // Base Encoding.
   $form['basic']['influxis_state_data'] = array(
     '#type' => 'textfield',
     '#title' => t('State Data'),
@@ -273,8 +272,7 @@ function influxis_encoding_settings() {
   );
 
 
-  ////////////////////H264 ENCODING////////////////////////
-
+  //H264 Encoding.
   $form['H264']['influxis_use_h264_settings'] = array(
     '#type' => 'checkbox',
     '#title' => t('Click here to enable the additional H264 settings.'),
@@ -492,7 +490,7 @@ function influxis_encoding_settings() {
 
   $form['H264']['influxis_partitions'] = array(
     '#type' => 'textfield',
-    '#title' => t('Paritions seperated by comma (ex: i4x4", "i8x8", "p8x8", "b8x8")'),
+    '#title' => t('Paritions separated by comma (ex: i4x4", "i8x8", "p8x8", "b8x8")'),
     '#size' => 10,
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_partitions'),
@@ -608,9 +606,7 @@ function influxis_encoding_settings() {
   );
 
 
-  ////////////////////VPX ENCODING////////////////////////
-
-
+  // VPX Encoding.
   $form['VPX']['influxis_use_vp8_settings'] = array(
     '#type' => 'checkbox',
     '#title' => t('Click here to enable the additional VP8 settings.'),
@@ -761,7 +757,7 @@ function influxis_encoding_settings() {
 }
 
 
-/*
+/**
  * validates settings
  */
 function influxis_account_settings_validate(&$form, &$form_state) {
@@ -775,7 +771,7 @@ function influxis_account_settings_validate(&$form, &$form_state) {
   }
 }
 
-/*
+/**
  * Submits form
  * Password is encrypted before saving to DB
  */
@@ -785,7 +781,7 @@ function influxis_account_settings_submit(&$form, &$form_state) {
   variable_set('influxis_videourl', $form_state['values']['influxis_videourl']);
 
   if ($form_state['values']['influxis_password'] != '') {
-    $encrypt = new Encrypt();
+    $encrypt = new influxis_encrypt();
     $protected = $encrypt->protect($form_state['values']['influxis_password']);
     if ($protected === FALSE) {
       _influxis_error("Unable to save password using mcrypt.  Ensure mcrypt is installed on server.");
@@ -793,14 +789,13 @@ function influxis_account_settings_submit(&$form, &$form_state) {
     }
     else {
       variable_set('influxis_password', $protected);
-      //$raw = $encrypt->reveal($protected);
     }
   }
   drupal_set_message(t("Account Settings Saved"));
 }
 
 
-/*
+/**
  * Form that displays status of influxis videos and triggers video status change
  */
 function influxis_status_form($form = array(), $form_state) {
@@ -808,10 +803,11 @@ function influxis_status_form($form = array(), $form_state) {
   $fms = _influxis_();
   $all_complete = TRUE;
   if ($fms == NULL) return;
-  //get all videos
+  // Get all videos.
   $results = _influxis_update_videos();
   $hide_complete = variable_get('influxis_hide_completed');
 
+  // Loop through records and display information about them.
   foreach ($results as $record) {
     $fid = $record->fid;
     $status = $record->status;
@@ -827,7 +823,7 @@ function influxis_status_form($form = array(), $form_state) {
 
     $node=node_load($nid);
 
-    //define node display in form
+    // Define node display in form.
     if ($node == NULL) {
       $node_type = "";
       $node_link = array(
@@ -843,6 +839,8 @@ function influxis_status_form($form = array(), $form_state) {
       ));
     }
 
+    //Depending if the "hide completed" button is clicked
+    //We skip completed and deleted videos.
     if ($status != 3) $all_complete = FALSE;
     if ($status == 3 && $hide_complete) continue;
     if ($status == 5 && $hide_complete) continue;
