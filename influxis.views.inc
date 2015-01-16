@@ -1,10 +1,10 @@
 <?php
-/*
+/**
  * @file
  * File for adding in addition view filter
  */
 
-/*
+/**
  * hook_views_api()
  */
 function influxis_views_api() {
@@ -13,20 +13,20 @@ function influxis_views_api() {
   );
 }
 
-/*
+/**
  * hook_views_data
  */
 function influxis_views_data() {
   $data['influxis'] = array(
     'table' => array(
       'group' => t('Influxis'),
-        'title' => 'Influxis',
-          'join' => array(
-            'node' => array(
-              'left_field' => 'nid',
-                'field' => 'nid',
-              ),
+      'title' => 'Influxis',
+        'join' => array(
+          'node' => array(
+            'left_field' => 'nid',
+            'field' => 'nid',
           ),
+        ),
       ),
       'status' => array(
         'title' => t('Status'),

@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * @file
  * File used to encrypt influxis account password
  */
@@ -8,7 +8,7 @@ class influxis_encrypt {
 
   private $key = "thuwre3A";
 
-  /*
+  /**
    * Proect string
    */  
   public function protect($data) {
@@ -24,7 +24,7 @@ class influxis_encrypt {
     return $encrypted_data;
   }
 
-  /*
+  /**
    * Reveal protected string
    */  
   public function reveal($protected) {
@@ -40,7 +40,7 @@ class influxis_encrypt {
     return $raw;
   }
 
-  /*
+  /**
    *  Check mcyrpt exsists 
    */
   private function checkMcrypt() {
@@ -51,5 +51,4 @@ class influxis_encrypt {
       return FALSE;
     }
   }
-  
 }

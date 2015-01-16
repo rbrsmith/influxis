@@ -1,24 +1,18 @@
 <?php
-/*
+/**
  * @file
  * Influxis module file
- * 
  * Module handles uploading viewing and deleting files from Influxis API
- * Most hooks are grouped with similar hooks in separate files this file includes those files
- * and provides a couple of additional hooks
+ * Most hooks are grouped with similar hooks in separate files 
+ * this file includes those files and provides a couple of additional hooks
  */
-
 
 module_load_include('inc', 'influxis', 'influxis.field');
 module_load_include('inc', 'influxis', 'influxis.admin');
 module_load_include('inc', 'influxis', 'influxis.views');
 module_load_include('inc', 'influxis', 'influxis.helpers');
 
-
-
-
-
-/*
+/**
  * hook_cron()
 */
 function influxis_cron() {
@@ -26,15 +20,14 @@ function influxis_cron() {
   _influxis_update_videos();
 }
 
-
-/*
+/**
  * hook_menu
  */
 function influxis_menu() {
   $items = array();
   $admin_file = 'influxis.admin.inc';
 
-  //to level influxis menu, pulls same form as account settings
+  // To level influxis menu, pulls same form as account settings.
   $items['admin/config/media/influxis'] = array(
     'title' => 'Influxis',
     'description' => 'Allows the user to configure the Influxis settings',
@@ -42,7 +35,7 @@ function influxis_menu() {
     'page callback' => 'influxis_settings_page',
     'access arguments' => array('administrator influxis settings'),
   );
-  //account settings admin form	
+  // Account settings admin form.
   $items['admin/config/media/influxis/account'] = array(
     'title' => 'Influxis Account Settings',
     'description' => 'Settings for Influxis module',
@@ -53,7 +46,7 @@ function influxis_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => 0,
   );
-  //encode account settings
+  // Encode account settings.
   $items['admin/config/media/influxis/encode'] = array(
     'title' => 'Influxis Encoding Settings',
     'description' => 'Encode Settings for Influxis module',
@@ -64,7 +57,7 @@ function influxis_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => 1,
   );
-  //status admin page
+  // Status admin page.
   $items['admin/config/media/influxis/status'] = array(
     'title' => 'Influxis Status',
     'description' => 'Status of all the jobs with Influxis',
@@ -79,7 +72,7 @@ function influxis_menu() {
 }
 
 
-/*
+/**
  * hook_permission()
  */
 function influxis_permission() {

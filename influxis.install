@@ -1,11 +1,10 @@
 <?php 
-
-/*
+/**
  * @file
  * File used to install influxis db which tracks status
  */
 
-/*
+/**
  * hook_field_schema()
  */
 function influxis_field_schema($field) {
@@ -13,24 +12,24 @@ function influxis_field_schema($field) {
     'columns' => array(
       'fid' => array(
         'description' => 'The File Id being referenced in this field',
-          'type' => 'int',
-          'not null' => FALSE,
-          'unsigned' => TRUE,
-        ),
+        'type' => 'int',
+        'not null' => FALSE,
+        'unsigned' => TRUE,
       ),
-      'indexes' => array(
-        'fid' => array('fid'),
-      ),
-      'foreign keys' => array(
-        'fid' => array(
-          'table' => 'file_managed',
-          'columns' => array('fid' => 'fid'),
-        )
+    ),
+    'indexes' => array(
+      'fid' => array('fid'),
+    ),
+    'foreign keys' => array(
+      'fid' => array(
+        'table' => 'file_managed',
+        'columns' => array('fid' => 'fid'),
       )
+    )
   );
 }
 
-/*
+/**
  * hook_install()
  */
 function influxis_install() {
@@ -38,7 +37,7 @@ function influxis_install() {
   file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
 }
 
-/*
+/**
  * hook_influxis_schema()
  */
 function influxis_schema() {
@@ -60,10 +59,10 @@ function influxis_schema() {
         'unsigned' => TRUE,
       ),
         'status' => array(
-        'description' => 'Status identifier of the file with influxis',
-        'type' => 'int',
-        'not null' => TRUE,
-        'unsigned' => TRUE,
+          'description' => 'Status identifier of the file with influxis',
+          'type' => 'int',
+          'not null' => TRUE,
+          'unsigned' => TRUE,
       ),
       'source' => array(
         'description' => 'Influxis Source Media ID',
@@ -122,7 +121,7 @@ function influxis_schema() {
   return $schema;
 }
 
-/*
+/**
  * hook_uninstall()
  */
 function influxis_uninstall() {

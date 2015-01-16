@@ -1,18 +1,17 @@
 <?php
 
-/*
+/**
  * @file
  * File full of functions to help, no hooks defined here
  */
 
 
-/*
+/**
  * Get influxis instance
 */
 function _influxis_() {
   $username =  variable_get('influxis_username');
   $password_enc = variable_get('influxis_password');
- // if (!$password_enc) return NULL;
   $base = variable_get('influxis_baseurl');
   $video = variable_get('influxis_videourl');
   if ($username == NULL || $password_enc == NULL || $base == NULL || $video == NULL) {
@@ -32,7 +31,7 @@ function _influxis_() {
   }
 }
 
-/*
+/**
  * Send video to influxis for updating
 */
 function _influxis_upload($fid, $nid) {
@@ -52,16 +51,15 @@ function _influxis_upload($fid, $nid) {
     _influxis_error("Unable to upload video to influxis.  Error in file upload.  Filename: " . $file->filename);
     return;
   }
-  //video has been sent to influxis for uploading
+  // Video has been sent to influxis for uploading.
   drupal_set_message(t("Video sent to influxis for uploading"));
 
   $db_table = variable_get('influxis_db', 'influxis');
   $query = db_insert($db_table)
-  //		->key(array('nid' => $nid))
   ->fields(array(
     'fid' => $file->fid,
     'nid' => $nid,
-    'status' => 1, 
+    'status' => 1,
     'source' => $file_upload->source,
   ));
 
@@ -73,7 +71,7 @@ function _influxis_upload($fid, $nid) {
 }
 
 
-/*
+/**
  * Get all records in influxis table
 * @param condition:  singular array, or multi array, of conditions - ex array('nid', 5, '=')
 * @return: array of all records matching condition
@@ -85,14 +83,14 @@ function _influxis_get_records($condition = NULL) {
     ->fields('i');
 
   if (isset($condition)) {
-    //multiple conditions
+    // Multiple conditions.
     if (is_array($condition[0])) {
       foreach ($condition as $c) {
         $query->condition($c[0], $c[1], $c[2]);
       }
-      //singular condition
     }
     else {
+      // Singular condition.
       $query->condition($condition[0], $condition[1], $condition[2]);
     }
   }
@@ -106,8 +104,8 @@ function _influxis_get_records($condition = NULL) {
 }
 
 
-/*
- * Update the status field of an influxis video
+/**
+* Update the status field of an influxis video
 * @param: int status, int fid of file, optiona array fields of all other fields to be updated
 */
 function _influxis_update_status($status, $condition_fid, $fields = array()) {
@@ -125,7 +123,7 @@ function _influxis_update_status($status, $condition_fid, $fields = array()) {
 }
 
 
-/*
+/**
  * update all video status
 */
 function _influxis_update_videos() {
@@ -136,7 +134,7 @@ function _influxis_update_videos() {
   return $results;
 }
 
-/*
+/**
  * Update a single records status - triggering any uploading or encoding to be done
 * @param: database class record from influxis table
 */
