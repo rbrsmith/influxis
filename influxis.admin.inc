@@ -5,7 +5,7 @@
  */
 
 /**
- * General page for admin settings
+ * General page for admin settings.
  */
 function influxis_settings_page($op = NULL) {
   $output = drupal_get_form('influxis_account_settings');
@@ -95,7 +95,6 @@ function influxis_encoding_settings() {
     '#description' => t('Enter VPX encoding settings here'),
     '#group' => 'encoding',
   );
-
 
   // Base Encoding.
   $form['basic']['influxis_state_data'] = array(
@@ -798,7 +797,8 @@ function influxis_account_settings_submit(&$form, &$form_state) {
 /**
  * Implements hook_form().
  *
- * Form that displays status of influxis videos and triggers video status change.
+ * Form that displays status of influxis videos.
+ * Also triggers video status change.
  */
 function influxis_status_form($form_state, $form = array()) {
   $rows = array('#tree' => TRUE);
@@ -840,7 +840,7 @@ function influxis_status_form($form_state, $form = array()) {
         'data' => array(
           '#type' => 'link',
           '#title' => filter_xss($node->title),
-          '#href' => 'node/' . $nid, 
+          '#href' => 'node/' . $nid,
         ),
       );
     }
@@ -848,10 +848,12 @@ function influxis_status_form($form_state, $form = array()) {
     // Depending if the "hide completed" button is clicked
     // We skip completed and deleted videos.
     if ($status != 3) {
-    	$all_complete = FALSE;
-    } elseif ($status == 3 && $hide_complete) {
+      $all_complete = FALSE;
+    }
+    elseif ($status == 3 && $hide_complete) {
       continue;
-    } elseif ($status == 5 && $hide_complete) {
+    }
+    elseif ($status == 5 && $hide_complete) {
       continue;
     }
 
@@ -886,12 +888,12 @@ function influxis_status_form($form_state, $form = array()) {
       '#theme' => 'influxis_form_table',
       '#header' => array(
         t('Node Type'),
-      	t('Nid'),
-      	t('Node Title'),
-      	t('Fid'), 
-      	t('File'),
-      	t('Status')),
-      'rows' => $rows,
+        t('Nid'),
+        t('Node Title'),
+        t('Fid'), 
+        t('File'),
+        t('Status')),
+        'rows' => $rows,
     );
   }
 
@@ -919,18 +921,18 @@ function influxis_status_form_submit($form, $form_state) {
 
 /**
  * Implements hook_theme().
-*/
+ */
 function influxis_theme() {
   return array(
     'influxis_form_table' => array(
-      'render element' => 'form'
-    )
+      'render element' => 'form',
+    ),
   );
 }
 
 /**
  * Called by influxis_theme to render admin form.
-*/
+ */
 function theme_influxis_form_table(&$variables) {
   // Get the useful values.
   $form = $variables['form'];

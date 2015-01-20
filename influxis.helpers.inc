@@ -2,15 +2,15 @@
 
 /**
  * @file
- * File full of functions to help, no hooks defined here
+ * File full of functions to help, no hooks defined here.
  */
 
 
 /**
- * Get influxis instance
-*/
+ * Get influxis instance.
+ */
 function _influxis_() {
-  $username =  variable_get('influxis_username');
+  $username = variable_get('influxis_username');
   $password_enc = variable_get('influxis_password');
   $base = variable_get('influxis_baseurl');
   $video = variable_get('influxis_videourl');
@@ -32,14 +32,16 @@ function _influxis_() {
 }
 
 /**
- * Send video to influxis for updating
-*/
+ * Send video to influxis for updating.
+ */
 function _influxis_upload($fid, $nid) {
   $file = file_load($fid);
   $file_url = drupal_realpath($file->uri);
 
   $fms = _influxis_();
-  if ($fms == NULL) return;
+  if ($fms == NULL) {
+    return;
+  }
   $file_upload = $fms->uploadFile($file->filename, TRUE);
   if (!$file_upload->success || $file_upload->token == NULL || $file_upload->source == NULL) {
     _influxis_error("Unable to upload video to influxis.  Error in token creation.  Filename: " . $file->filename);
@@ -65,17 +67,18 @@ function _influxis_upload($fid, $nid) {
 
   try {
     $query->execute();
-  } catch (PDOException $e) {
+  }
+  catch (PDOException $e) {
     _influxis_error("Error with inserting into DB " . $e->getMessage());
   }
 }
 
 
 /**
- * Get all records in influxis table
-* @param condition:  singular array, or multi array, of conditions - ex array('nid', 5, '=')
-* @return: array of all records matching condition
-*/
+ * Get all records in influxis table.
+ * @param condition:  singular array, or multi array, of conditions - ex array('nid', 5, '=')
+ * @return: array of all records matching condition
+ */
 function _influxis_get_records($condition = NULL) {
   $db_table = variable_get('influxis_db', 'influxis');
 
@@ -98,16 +101,17 @@ function _influxis_get_records($condition = NULL) {
   try {
     $res = $query->execute();
     return (($results = $res->fetchAll()) == 0 ? NULL : $results);
-  } catch (PDOException $e) {
+  }
+  catch (PDOException $e) {
     _influxis_error("Error getting status from DB " . $e->getMessage());
   }
 }
 
 
 /**
-* Update the status field of an influxis video
-* @param: int status, int fid of file, optiona array fields of all other fields to be updated
-*/
+ * Update the status field of an influxis video.
+ * @param: int status, int fid of file, optiona array fields of all other fields to be updated
+ */
 function _influxis_update_status($status, $condition_fid, $fields = array()) {
   $fields['status'] = $status;
 
@@ -117,15 +121,16 @@ function _influxis_update_status($status, $condition_fid, $fields = array()) {
     ->condition('fid', $condition_fid);
   try {
     $query->execute();
-  } catch (PDOException $e) {
+  }
+  catch (PDOException $e) {
     _influxis_error("Could not update database status");
   }
 }
 
 
 /**
- * update all video status
-*/
+ * Update all video status.
+ */
 function _influxis_update_videos() {
   $results = _influxis_get_records();
   foreach ($results as $record) {
@@ -135,15 +140,17 @@ function _influxis_update_videos() {
 }
 
 /**
- * Update a single records status - triggering any uploading or encoding to be done
-* @param: database class record from influxis table
-*/
+ * Update a single records status
+ * @param: database class record from influxis table
+ */
 function _influxis_update_video(&$record) {
   $fms = _influxis_();
-  if ($fms == NULL) return;
-  //video is being uploaded
+  if ($fms == NULL) {
+    return;
+  }
+  // Video is being uploaded.
   if ($record->status == 1) {
-    //send video to be encoded
+    // Send video to be encoded.
     $params = _influxis_get_encoding($record->source);
     $res = $fms->encode($record->source, $params);
     if (!$res->success) {
@@ -159,10 +166,10 @@ function _influxis_update_video(&$record) {
       ));
       $record->status = 2;
     }
-    //if video in in encoding state
+    // If video in in encoding state.
   }
   elseif ($record->status == 2) {
-    //check videos status
+    // Check videos status.
     $res = $fms->getStatus($record->job);
     if (!$res->success) {
       _influxis_error("Could not get status of video for " . $record->fid);
@@ -171,9 +178,9 @@ function _influxis_update_video(&$record) {
       _influxis_update_status(3, $record->fid);
       $record->status = 3;
     }
-    //video is marked for deletion
   }
   elseif ($record->status == 4) {
+    // Video is marked for deletion.
     if ($record->sibling == NULL) {
       _influxis_error("Could not remove video from influxis - No sibling for " . $record->fid);
     }
@@ -186,8 +193,8 @@ function _influxis_update_video(&$record) {
     }
   }
 
-  //TODO put condition so this is not always called (ie deleted videos)
-  //regardless of state if we have a sibling id but no url we'll try to get url
+  // TODO put condition so this is not always called (ie deleted videos).
+  // Regardless of state if we have a sibling id but no url we'll try to get url.
   if (isset($record->sibling) && $record->status != 5) {
     $res = $fms->getSibling($record->sibling);
     if ($res->success) {
@@ -206,10 +213,10 @@ function _influxis_update_video(&$record) {
   }
 }
 
-/*
- * Update url for a record
-* @param string url to change, string type of url (rtmp, http), int fid of file
-*/
+/**
+ * Update url for a record.
+ * @param string url to change, string type of url (rtmp, http), int fid of file
+ */
 function _influxis_update_url($url, $type, $fid) {
   $column = $type . "Url";
   $fields = array($column => $url);
@@ -221,27 +228,30 @@ function _influxis_update_url($url, $type, $fid) {
     ->condition('fid', $fid);
   try {
     $query->execute();
-  } catch (PDOException $e) {
+  }
+  catch (PDOException $e) {
     _influxis_error("Could not update database");
   }
 
 }
 
-/*
- * mark a file for deletiong
-* @param: int fid of file
-*/
+/**
+ * Mark a file for deletiong.
+ * @param: int fid of file
+ */
 function _influxis_prepare_to_delete($fid) {
   _influxis_update_status(4, $fid);
 }
 
-/*
- * Delete a video from influxis
-* @param: int fid of file, int sibling id of video
-*/
+/**
+ * Delete a video from influxis.
+ * @param: int fid of file, int sibling id of video
+ */
 function _influxis_delete_video($fid, $sibling) {
   $fms = _influxis_();
-  if ($fms == NULL) return;
+  if ($fms == NULL) {
+    return;
+  }
   $delete_sib_res = $fms->deleteSibling($sibling);
   if ($delete_sib_res->success) {
     if ($delete_sib_res->processing) {
@@ -261,23 +271,25 @@ function _influxis_delete_video($fid, $sibling) {
 }
 
 
-/*
- *	Wrapper for setting message in drupal
-*	@param:  string msg to display
-*/
+/**
+ *	Wrapper for setting message in drupal.
+ *	@param:  string msg to display
+ */
 function _influxis_error($msg) {
   drupal_set_message(filter_xss(t($msg)), "error");
   watchdog("influxis", $msg);
 }
 
 
-/*
- * get encoding variables
-* @param: int source id of video
-*/
+/**
+ * Get encoding variables.
+ * @param: int source id of video
+ */
 function _influxis_get_encoding($source) {
   $fms = _influxis_();
-  if ($fms == NULL) return;
+  if ($fms == NULL) {
+    return;
+  }
   $vp_x_settings = array(
     "ConstantRateFactor" => variable_get('influxis_constant_rate_factor'),
     "QualityMin" => variable_get('influxis_quality_min'),
@@ -297,7 +309,7 @@ function _influxis_get_encoding($source) {
     "MaxKeyFrameInterval" => variable_get('influxis_max_key_frame_interval'),
     "VPXSettings" => $vp_x_settings,
   );
-  $X264Settings = array(
+  $x_264_settings = array(
     "Preset" => $fms->options('influxis_preset', variable_get('influxis_preset')),
     "Tune" => $fms->options('influxis_tune', variable_get('influxis_tune')),
     "IntraRefresh" => variable_get('influxis_inta_refresh'),
@@ -326,7 +338,7 @@ function _influxis_get_encoding($source) {
     "NoiseReduction" => variable_get('influxis_noise_reduction'),
   );
 
-  $H264Settings = array(
+  $h_264_settings = array(
     "Profile" => $fms->options('influxis_h264_profile', variable_get('influxis_h264_profile')),
     "Level" => $fms->options('influxis_level', variable_get('influxis_level')),
     "MinKeyFrameInterval" => variable_get('influxis_min_key_frame_interval'),
@@ -336,7 +348,7 @@ function _influxis_get_encoding($source) {
     "NoDeblock" => variable_get('influxis_no_deblock'),
     "Deblock" => variable_get('influxis_deblock'),
     "OpenGop" => variable_get('influxis_open_hop'),
-    "X264Settings" => $X264Settings,
+    "X264Settings" => $x_264_settings,
   );
   $profile_1 = array(
     "StateData" => variable_get('influxis_state_data'),
@@ -359,17 +371,17 @@ function _influxis_get_encoding($source) {
     "AudioEncoder" => $fms->options('influxis_audio_encoder', variable_get('influxis_audio_encoder')),
   );
 
-  $profile_1['H264Settings'] = (variable_get('influxis_use_h264_settings') == 0 ? NULL : $H264Settings);
+  $profile_1['H264Settings'] = (variable_get('influxis_use_h264_settings') == 0 ? NULL : $h_264_settings);
   $profile_1['VP8Settings'] = (variable_get('influxis_use_vp8_settings') == 0 ? NULL : $vp_8_settings);
 
   $encode_1 = array(
     "SourceMediaId" => $source,
-    "Profiles" => array(0 => $profile_1)
+    "Profiles" => array(0 => $profile_1),
   );
 
   $encoding_param = array(
     "Encodes" => array(0 => $encode_1),
-    //			"StatusCallbackUrl" => ""
+    // "StatusCallbackUrl" => ""
   );
   return $encoding_param;
 }
