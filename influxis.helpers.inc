@@ -19,7 +19,7 @@ function _influxis_() {
     return NULL;
   }
   else {
-    $encrypt = new influxis_encrypt();
+    $encrypt = new InfluxisEncrypt();
     $raw = $encrypt->reveal($password_enc);
     if ($raw === FALSE) {
       _influxis_error("Cannot load influxis, could not save password.  Please ensure mcrypt is enabled on server.");

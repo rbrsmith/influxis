@@ -781,7 +781,7 @@ function influxis_account_settings_submit(&$form, &$form_state) {
   variable_set('influxis_videourl', $form_state['values']['influxis_videourl']);
 
   if ($form_state['values']['influxis_password'] != '') {
-    $encrypt = new influxis_encrypt();
+    $encrypt = new InfluxisEncrypt();
     $protected = $encrypt->protect($form_state['values']['influxis_password']);
     if ($protected === FALSE) {
       _influxis_error("Unable to save password using mcrypt.  Ensure mcrypt is installed on server.");

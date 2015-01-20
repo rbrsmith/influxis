@@ -3,6 +3,7 @@
 /**
  * @file
  * File used to group all field hooks together.
+ * 
  * Module creates an influxis video upload hook.
  */
 
@@ -105,7 +106,7 @@ function influxis_field_formatter_info() {
     'influxis_formatter_player' => array(
       'label' => t('Influxis Video'),
       'field types' => array('influxis'),
-    )
+    ),
   );
 }
 
