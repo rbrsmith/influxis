@@ -4,7 +4,7 @@
  * Add influxis status for views to check status of video.
  */
 
-class influxis_hander_filter_influxis_status extends views_handler_filter_in_operator {
+class InfluxisHanderFilterInfluxisStatus extends views_handler_filter_in_operator {
   /**
 	  * Override get_value_options() to return video status.
 	  */

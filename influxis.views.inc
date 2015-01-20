@@ -32,7 +32,7 @@ function influxis_views_data() {
       'title' => t('Status'),
       'help' => t('Status of the video'),
       'filter' => array(
-        'handler' => 'influxis_hander_filter_influxis_status',
+        'handler' => 'InfluxisHanderFilterInfluxisStatus',
       ),
     ),
   );
