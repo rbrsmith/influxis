@@ -5,7 +5,6 @@
  * File full of functions to help, no hooks defined here.
  */
 
-
 /**
  * Get influxis instance.
  */
@@ -76,7 +75,9 @@ function _influxis_upload($fid, $nid) {
 
 /**
  * Get all records in influxis table.
- * @param condition:  singular array, or multi array, of conditions - ex array('nid', 5, '=')
+ *
+ * @param: condition singular array, or multi array, of conditions - ex array('nid', 5, '=')
+ *
  * @return: array of all records matching condition
  */
 function _influxis_get_records($condition = NULL) {
@@ -110,6 +111,7 @@ function _influxis_get_records($condition = NULL) {
 
 /**
  * Update the status field of an influxis video.
+ *
  * @param: int status, int fid of file, optiona array fields of all other fields to be updated
  */
 function _influxis_update_status($status, $condition_fid, $fields = array()) {
@@ -140,7 +142,8 @@ function _influxis_update_videos() {
 }
 
 /**
- * Update a single records status
+ * Update a single records status.
+ *
  * @param: database class record from influxis table
  */
 function _influxis_update_video(&$record) {
@@ -194,7 +197,8 @@ function _influxis_update_video(&$record) {
   }
 
   // TODO put condition so this is not always called (ie deleted videos).
-  // Regardless of state if we have a sibling id but no url we'll try to get url.
+  // Regardless of state if we have a sibling id
+  // but no url we'll try to get url.
   if (isset($record->sibling) && $record->status != 5) {
     $res = $fms->getSibling($record->sibling);
     if ($res->success) {
@@ -215,7 +219,7 @@ function _influxis_update_video(&$record) {
 
 /**
  * Update url for a record.
- * @param string url to change, string type of url (rtmp, http), int fid of file
+ * @param: string url to change, string type of url (rtmp, http), int fid of file
  */
 function _influxis_update_url($url, $type, $fid) {
   $column = $type . "Url";
@@ -237,6 +241,7 @@ function _influxis_update_url($url, $type, $fid) {
 
 /**
  * Mark a file for deletiong.
+ *
  * @param: int fid of file
  */
 function _influxis_prepare_to_delete($fid) {
@@ -245,6 +250,7 @@ function _influxis_prepare_to_delete($fid) {
 
 /**
  * Delete a video from influxis.
+ *
  * @param: int fid of file, int sibling id of video
  */
 function _influxis_delete_video($fid, $sibling) {
@@ -272,17 +278,19 @@ function _influxis_delete_video($fid, $sibling) {
 
 
 /**
- *	Wrapper for setting message in drupal.
- *	@param:  string msg to display
+ * Wrapper for setting message in drupal.
+ *
+ * @param: string msg to display
  */
 function _influxis_error($msg) {
-  drupal_set_message(filter_xss(t($msg)), "error");
+  drupal_set_message(filter_xss($msg), "error");
   watchdog("influxis", $msg);
 }
 
 
 /**
  * Get encoding variables.
+ *
  * @param: int source id of video
  */
 function _influxis_get_encoding($source) {
