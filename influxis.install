@@ -1,11 +1,11 @@
 <?php
 /**
  * @file
- * File used to install influxis db which tracks status
+ * File used to install influxis db which tracks status.
  */
 
 /**
- * Implement hook_field_schema().
+ * Implements hook_field_schema().
  */
 function influxis_field_schema($field) {
   return array(
@@ -30,7 +30,7 @@ function influxis_field_schema($field) {
 }
 
 /**
- * Implement hook_install().
+ * Implements hook_install().
  */
 function influxis_install() {
   $directory = file_default_scheme() . '://influxis';
@@ -38,7 +38,7 @@ function influxis_install() {
 }
 
 /**
- * Implement hook_influxis_schema().
+ * Implements hook_influxis_schema().
  */
 function influxis_schema() {
   $db_table_name = 'influxis';
