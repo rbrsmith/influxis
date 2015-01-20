@@ -800,7 +800,7 @@ function influxis_account_settings_submit(&$form, &$form_state) {
  * Form that displays status of influxis videos.
  * Also triggers video status change.
  */
-function influxis_status_form($form_state, $form = array()) {
+function influxis_status_form($form = array()) {
   $rows = array('#tree' => TRUE);
   $fms = _influxis_();
   $all_complete = TRUE;
@@ -850,10 +850,10 @@ function influxis_status_form($form_state, $form = array()) {
     if ($status != 3) {
       $all_complete = FALSE;
     }
-    elseif ($status == 3 && $hide_complete) {
+    if ($status == 3 && $hide_complete) {
       continue;
     }
-    elseif ($status == 5 && $hide_complete) {
+    if ($status == 5 && $hide_complete) {
       continue;
     }
 
