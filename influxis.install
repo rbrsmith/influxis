@@ -1,11 +1,11 @@
-<?php 
+<?php
 /**
  * @file
  * File used to install influxis db which tracks status
  */
 
 /**
- * hook_field_schema()
+ * Implement hook_field_schema().
  */
 function influxis_field_schema($field) {
   return array(
@@ -24,13 +24,13 @@ function influxis_field_schema($field) {
       'fid' => array(
         'table' => 'file_managed',
         'columns' => array('fid' => 'fid'),
-      )
-    )
+      ),
+    ),
   );
 }
 
 /**
- * hook_install()
+ * Implement hook_install().
  */
 function influxis_install() {
   $directory = file_default_scheme() . '://influxis';
@@ -38,13 +38,13 @@ function influxis_install() {
 }
 
 /**
- * hook_influxis_schema()
+ * Implement hook_influxis_schema().
  */
 function influxis_schema() {
   $db_table_name = 'influxis';
   variable_set('influxis_db', $db_table_name);
   $schema['influxis'] = array(
-    'description' => t('Table holding influxis details'),
+    'description' => 'Table holding influxis details',
     'fields' => array(
       'fid' => array(
         'description' => 'The File Id of the file being uplaoded',
@@ -58,11 +58,11 @@ function influxis_schema() {
         'not null' => TRUE,
         'unsigned' => TRUE,
       ),
-        'status' => array(
-          'description' => 'Status identifier of the file with influxis',
-          'type' => 'int',
-          'not null' => TRUE,
-          'unsigned' => TRUE,
+      'status' => array(
+        'description' => 'Status identifier of the file with influxis',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
       ),
       'source' => array(
         'description' => 'Influxis Source Media ID',
@@ -114,15 +114,15 @@ function influxis_schema() {
       'nid' => array(
         'table' => 'node',
         'columns' => array('nid' => 'nid'),
-      )
-    ), 
+      ),
+    ),
     'primary key' => array('fid'),
   );
   return $schema;
 }
 
 /**
- * hook_uninstall()
+ * Implements hook_uninstall().
  */
 function influxis_uninstall() {
   $results = db_select("variable", "v")
