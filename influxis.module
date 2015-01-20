@@ -2,9 +2,9 @@
 /**
  * @file
  * Influxis module file
- * Module handles uploading viewing and deleting files from Influxis API
- * Most hooks are grouped with similar hooks in separate files 
- * this file includes those files and provides a couple of additional hooks
+ * Module handles uploading viewing and deleting files from Influxis API.
+ * Most hooks are grouped with similar hooks in separate files. 
+ * This file includes those files and provides a couple of additional hooks.
  */
 
 module_load_include('inc', 'influxis', 'influxis.field');
@@ -13,7 +13,7 @@ module_load_include('inc', 'influxis', 'influxis.views');
 module_load_include('inc', 'influxis', 'influxis.helpers');
 
 /**
- * hook_cron()
+ * Implements hook_cron().
 */
 function influxis_cron() {
   watchdog("influxis", "running influsix cron");
@@ -21,7 +21,7 @@ function influxis_cron() {
 }
 
 /**
- * hook_menu
+ * Implements hook_menu().
  */
 function influxis_menu() {
   $items = array();
@@ -66,19 +66,19 @@ function influxis_menu() {
     'page arguments' => array('influxis_status_form'),
     'access arguments' => array('administrator influxis settings'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 1
+    'weight' => 1,
   );
   return $items;
 }
 
 
 /**
- * hook_permission()
+ * Implements hook_permission().
  */
 function influxis_permission() {
   return array(
     'administrator influxis settings' => array(
       'title' => t('Administer Influxis'),
-    )
+    ),
   );
 }
