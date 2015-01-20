@@ -296,7 +296,7 @@ class Influxis {
       array(
         'Content-Type: application/json',
         'Accept: application/json',
-        "Expect: 100-continue"
+        "Expect: 100-continue",
       )
     );
     // 0 do not include header in output, 1 include header in output.
@@ -312,7 +312,7 @@ class Influxis {
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $verify_peer);
 
     // Disable HOST (the site you are sending request to) SSL Verification.
-    // If Host can have certificate which is invalid 
+    // If Host can have certificate which is invalid
     // Or expired / not signed by authorized CA.
     $verify_host = FALSE;
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $verify_host);
