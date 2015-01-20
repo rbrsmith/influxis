@@ -25,7 +25,7 @@ function _influxis_() {
       return NULL;
     }
     else {
-      return influxis::getInstance($username, $raw, $base, $video);
+      return Influxis::getInstance($username, $raw, $base, $video);
     }
   }
 }
@@ -219,6 +219,7 @@ function _influxis_update_video(&$record) {
 
 /**
  * Update url for a record.
+ *
  * @param: string url to change, string type of url (rtmp, http), int fid of file
  */
 function _influxis_update_url($url, $type, $fid) {

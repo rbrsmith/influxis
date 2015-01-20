@@ -892,7 +892,7 @@ function influxis_status_form($form_state, $form = array()) {
         t('Node Title'),
         t('Fid'),
         t('File'),
-        t('Status')
+        t('Status'),
       ),
       'rows' => $rows,
     );

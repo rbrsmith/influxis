@@ -3,47 +3,47 @@
 /**
  * @file
  * Influxis Class.
- * 
+ *
  * Calls Influxis API
  * https://api.influxis.com/v1
  */
 
-class influxis {
+class Influxis {
 
   private $suername;
   private $password;
-  private $base_url;
-  private $video_url;
+  private $baseUrl;
+  private $videoUrl;
   private $post;
   private $delete;
   private $process;
   static private $instance;
 
   /**
-   * Constructor
+   * Constructor.
    *
-   * @param:  string user
+   * @param: string user
    */
   private function __construct($user, $pass, $base, $video) {
     $this->credentials = $user . ":" . $pass;
-    $this->base_url = $base;
-    $this->video_url = $video;
+    $this->baseUrl = $base;
+    $this->videoUrl = $video;
     $this->post = TRUE;
     $this->delete = FALSE;
     $this->process = array(
       0 => 'error',
       1 => 'uploading',
       2 => 'encoding',
-      3 => 'complete', 
+      3 => 'complete',
       4 => 'ready to delete',
-      5 => 'deleted'
+      5 => 'deleted',
     );
   }
 
   /**
    * Singleton method.
    *
-   * @param:  string $username, string $password, string $base url, string $video url
+   * @param: string $username, string $password, string $base url, string $video url
    */
   public static function getInstance($user, $pass, $base, $video) {
     if (!isset(self::$instance)) {
@@ -57,11 +57,11 @@ class influxis {
    *
    * @param: optional int $code of process
    * @return: string of code or array of all possible process states
-  */
+   */
   public function getProcess($code = NULL) {
     if (isset($code)) {
       return $this->process[$code];
-    } 
+    }
     else {
       return $this->process;
     }
@@ -71,13 +71,13 @@ class influxis {
    * Returns video url.
    */
   public function getVideoUrl() {
-    return $this->video_url;
+    return $this->videoUrl;
   }
 
   /**
    * Set the type of api call (get or bool).
    *
-   * @param:  boolean $bool
+   * @param: boolean $bool
    */
   public function setPost($bool) {
     $this->post = $bool;
@@ -92,9 +92,9 @@ class influxis {
   public function getSibling($id) {
     $this->setPost(FALSE);
     $this->setDelete(FALSE);
-    $res = $this->call_api("/sibling?SiblingEncodeId=" . $id);
+    $res = $this->callApi("/sibling?SiblingEncodeId=" . $id);
     $curl = json_decode($res->curl_exec);
-    $response = new stdclass;
+    $response = new stdclass();
     $response->success = FALSE;
     $response->url = NULL;
     $response->filename = NULL;
@@ -114,7 +114,7 @@ class influxis {
   /**
    * Set if using delete API call.
    *
-   * @param:  boolean $bool
+   * @param: boolean $bool
    */
   public function setDelete($bool) {
     $this->delete = $bool;
@@ -124,19 +124,19 @@ class influxis {
    * Delete video.
    *
    * @param: int $id of sibling
-   * @return:  Class {bool success, bool processing}
+   * @return: Class {bool success, bool processing}
    */
   public function deleteSibling($id) {
-    $this->setPost(true);
-    $this->setDelete(true);
+    $this->setPost(TRUE);
+    $this->setDelete(TRUE);
     $data = array(
-      "SiblingEncodeId" => $id, 
+      "SiblingEncodeId" => $id,
     );
 
-    $res = $this->call_api("/sibling", json_encode($data));
+    $res = $this->callApi("/sibling", json_encode($data));
     $curl = json_decode($res->curl_exec);
 
-    $response = new stdclass;
+    $response = new stdclass();
     $response->success = FALSE;
     $response->processing = NULL;
     if ($res->success) {
@@ -148,19 +148,19 @@ class influxis {
   }
 
   /**
-   * Get video token for uploading (one of two calls to upload video to influxis).
+   * Get video token for uploading.
    *
    * @param: string $filename, bool $overwite
-   * @return:  Class {bool success, string token, int source}
+   * @return: Class {bool success, string token, int source}
    */
   public function uploadFile($filename, $overwrite) {
     $data = array(
       "FileName" => $filename,
       "Overwrite" => $overwrite,
     );
-    $result = $this->call_api("/upload/any", json_encode($data));
+    $result = $this->callApi("/upload/any", json_encode($data));
 
-    $response = new stdClass;
+    $response = new stdClass();
     $response->success = FALSE;
     if ($result->success) {
       $response->success = TRUE;
@@ -172,35 +172,35 @@ class influxis {
   }
 
   /**
-   * Upload video (second of two calls to upload video to influxis) - asynchronous.
+   * Upload video - asynchronous.
    *
-   * @param:  string $token, string $file path of file to be uplaoded
-   * @return:  Class {bool success}
+   * @param: string $token, string $file path of file to be uplaoded
+   * @return: Class {bool success}
    */
   public function uploadTokenAsync($token, $file) {
-    $url = $this->video_url . ':8080/uploadhandler/FileUploadHandler?mode=encode';
+    $url = $this->videoUrl . ':8080/uploadhandler/FileUploadHandler?mode=encode';
     $command = "curl  --header 'Influxis-Upload-Token: " . $token . "' --form 'File=@" . $file . "' " . $url . "";
     // Set wether curl command should send output to txt file or not.
     $command .= " > /dev/null &";
 
     // Call exec to make the token curl async.
-    // This is done due to the timeout on browsers when waiting for this api call to complete.
+    // This is done due to the timeout on browsers.
     // Especially on browsers passing via proxy.
     exec($command);
 
-    $response = new stdClass;
+    $response = new stdClass();
     $response->success = TRUE;
     return $response;
   }
 
   /**
-   * Upload video (second of two calls to upload video to influxis) - NON-asynchronous.
+   * Upload video - NON-asynchronous.
    *
-   * @param:  string $token, string $file path of file to be uplaoded
-   * @return:  Class {bool success}
+   * @param: string $token, string $file path of file to be uplaoded
+   * @return: Class {bool success}
    */
   public function uploadToken($token, $file) {
-    $url = $this->video_url . ':8080/uploadhandler/FileUploadHandler?mode=encode';
+    $url = $this->videoUrl . ':8080/uploadhandler/FileUploadHandler?mode=encode';
     $ch = curl_init($url);
     $data = array('File' => "@$file");
     curl_setopt($ch, CURLOPT_POST, TRUE);
@@ -209,7 +209,7 @@ class influxis {
       'Influxis-Upload-Token: ' . $token,
     ));
 
-    $result = new StdClass;      
+    $result = new StdClass();
     // Get the response and close the channel.
     $result->curl_exec = curl_exec($ch);
     $result->httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -220,7 +220,7 @@ class influxis {
     $result->error = curl_error($ch);
     curl_close($ch);
 
-    $response = new stdClass;
+    $response = new stdClass();
     $response->success = FALSE;
     if ($result->success) {
       $response->success = TRUE;
@@ -231,14 +231,14 @@ class influxis {
   /**
    * Encode video.
    *
-   * @param:  int $sourceMediaId, array $params of all encoding variables
+   * @param: int $sourceMediaId, array $params of all encoding variables
    * @return: Class {bool success, bool uploaded, int sibling, int job, int media
    */
-  public function encode($sourceMediaId, $params) {
+  public function encode($params) {
     $this->setPost(TRUE);
-    $result = $this->call_api("/encode/source/managed", json_encode($params));
+    $result = $this->callApi("/encode/source/managed", json_encode($params));
     $curl = json_decode($result->curl_exec);
-    $response = new stdClass;
+    $response = new stdClass();
     $response->success = FALSE;
     $response->uploaded = FALSE;
     $response->job = NULL;
@@ -246,12 +246,12 @@ class influxis {
     $response->sibling = NULL;
     if ($result->success) {
       $response->success = TRUE;
-      if (sizeof($curl->badSources) == 0) {
+      if (count($curl->badSources) == 0) {
         $response->uploaded = TRUE;
         $queue = $curl->siblingGroupResults[0]->encodeResults[0]->queuedInfo;
         $response->sibling = $curl->siblingGroupResults[0]->siblingEncodeId;
         $response->job = $queue->encodeJobId;
-        $response->media= $queue->encodeMediaId;
+        $response->media = $queue->encodeMediaId;
       }
     }
     return $response;
@@ -261,13 +261,13 @@ class influxis {
    * Get status of an encode job.
    *
    * @param: int $job id of encoding job
-   * @return: Class {bool success, bool isComplete}  
+   * @return: Class {bool success, bool isComplete}
    */
   public function getStatus($job) {
     $this->setPost(FALSE);
-    $result = $this->call_api("/encode/status?EncodeJobId=" . $job);
+    $result = $this->callApi("/encode/status?EncodeJobId=" . $job);
     $curl = json_decode($result->curl_exec);
-    $response = new stdClass;
+    $response = new stdClass();
     $response->success = FALSE;
     $response->isComplete = FALSE;
     $response->curl = $curl;
@@ -283,30 +283,37 @@ class influxis {
    *
    * @param: string $service_name of api to call, option array $post_data of parameters for call
    */
-  private function call_api($service_name, $post_data = NULL) {
-    $response = new stdClass;
+  private function callApi($service_name, $post_data = NULL) {
+    $response = new stdClass();
     $response->success = FALSE;
-    $url = $this->base_url . $service_name;
+    $url = $this->baseUrl . $service_name;
 
-    //$contentLength = strlen($post_data);
+    // $contentLength = strlen($post_data);
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     // Override the default headers.
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Accept: application/json', "Expect: 100-continue"));
+    curl_setopt($ch, CURLOPT_HTTPHEADER,
+      array(
+        'Content-Type: application/json',
+        'Accept: application/json',
+        "Expect: 100-continue"
+      )
+    );
     // 0 do not include header in output, 1 include header in output.
-    curl_setopt($ch, CURLOPT_HEADER, 0);   
+    curl_setopt($ch, CURLOPT_HEADER, 0);
     // Set username and password.
     if ($this->credentials != "") {
       curl_setopt($ch, CURLOPT_USERPWD, $this->credentials);
     }
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30); 
-        
-    // if you are not running with SSL or if you don't have valid SSL.
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+    // If you are not running with SSL or if you don't have valid SSL.
     $verify_peer = FALSE;
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $verify_peer);
-        
+
     // Disable HOST (the site you are sending request to) SSL Verification.
-    // If Host can have certificate which is invalid / expired / not signed by authorized CA.
+    // If Host can have certificate which is invalid 
+    // Or expired / not signed by authorized CA.
     $verify_host = FALSE;
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $verify_host);
 
@@ -318,7 +325,7 @@ class influxis {
     if ($this->delete) {
       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
     }
-        
+
     // Set so curl_exec returns the result instead of outputting it.
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
@@ -331,14 +338,14 @@ class influxis {
     }
     $response->error = curl_error($ch);
     curl_close($ch);
-        
+
     return $response;
   }
 
   /**
    * Array of encoding select options available.
    *
-   * @param:  string $name option, optional int $value of an option name
+   * @param: string $name option, optional int $value of an option name
    */
   public function options($name, $value = NULL) {
     $opts = array(
@@ -352,7 +359,7 @@ class influxis {
         1 => 'VP8',
         2 => 'Theora',
       ),
-      'influxis_audio' =>  array(
+      'influxis_audio' => array(
         0 => 'AAC',
         1 => 'MP3',
         2 => 'Vorbis',
@@ -384,7 +391,7 @@ class influxis {
         3 => 'High10',
         4 => 'High422',
         5 => 'High444',
-      ), 
+      ),
       'influxis_level' => array(
         0 => 'L1',
         1 => 'L1b',
@@ -417,14 +424,14 @@ class influxis {
         9 => 'Placebo',
       ),
       'influxis_tune' => array(
-        0 => 'Film', 
+        0 => 'Film',
         1 => 'Animation',
         2 => 'Grain',
         3 => 'StillImage',
         4 => 'PSNR',
         5 => 'SSIM',
         6 => 'FastDecode',
-        7 => 'ZeroLatency', 
+        7 => 'ZeroLatency',
       ),
       'influxis_b_adapt' => array(
         0 => 'Disabled',
@@ -480,8 +487,8 @@ class influxis {
       ),
       'influxis_deadline' => array(
         0 => 'Best',
-        1 => 'Good', 
-        2 => 'Realtime', 
+        1 => 'Good',
+        2 => 'Realtime',
       ),
       'influxis_error_resilient' => array(
         0 => 'Default',
