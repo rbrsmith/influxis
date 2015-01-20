@@ -3,8 +3,7 @@
  * @file
  * Influxis module file
  * Module handles uploading viewing and deleting files from Influxis API.
- * Most hooks are grouped with similar hooks in separate files. 
- * This file includes those files and provides a couple of additional hooks.
+ * Most hooks are grouped with similar hooks in separate files.
  */
 
 module_load_include('inc', 'influxis', 'influxis.field');
@@ -14,7 +13,7 @@ module_load_include('inc', 'influxis', 'influxis.helpers');
 
 /**
  * Implements hook_cron().
-*/
+ */
 function influxis_cron() {
   watchdog("influxis", "running influsix cron");
   _influxis_update_videos();
