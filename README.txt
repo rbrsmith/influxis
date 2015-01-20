@@ -44,4 +44,3 @@ CONFIGURATION
  * Username, password, API url and video url must be set.  
  * Video url is the http version of the RTMP/FMS url in 
  * account settings on influxis.com
- 

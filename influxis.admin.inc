@@ -1,8 +1,7 @@
 <?php
 /**
- * @file 
- * File used for administrative settings
- * 
+ * @file
+ * File used for administrative settings.
  */
 
 /**
@@ -14,7 +13,7 @@ function influxis_settings_page($op = NULL) {
 }
 
 /**
- * Returns account settings admin form
+ * Returns account settings form.
  */
 function influxis_account_settings() {
   $form = array();
@@ -61,14 +60,16 @@ function influxis_account_settings() {
 }
 
 /**
- * Returns encoding admin settings
+ * Returns encoding admin settings.
  */
 function influxis_encoding_settings() {
   $fms = _influxis_();
-  if ($fms == NULL) return;
+  if ($fms == NULL) {
+    return;
+  }
   $form = array();
   $form['encoding'] = array(
-    '#type' => 'vertical_tabs', 
+    '#type' => 'vertical_tabs',
   );
 
   $form['basic'] = array(
@@ -76,7 +77,7 @@ function influxis_encoding_settings() {
     '#title' => t('Basic encoding settings'),
     '#collapsible' => TRUE,
     '#description' => t('Enter basic encoding settings here'),
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264'] = array(
@@ -84,7 +85,7 @@ function influxis_encoding_settings() {
     '#title' => t('H264 encoding settings'),
     '#collapsible' => TRUE,
     '#description' => t('Enter H264 encoding settings here'),
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX'] = array(
@@ -92,7 +93,7 @@ function influxis_encoding_settings() {
     '#title' => t('VPX encoding settings'),
     '#collapsible' => TRUE,
     '#description' => t('Enter VPX encoding settings here'),
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
 
@@ -104,7 +105,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#required' => FALSE,
     '#default_value' => variable_get('influxis_state_data'),
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_container'] = array(
@@ -113,7 +114,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_container'),
     '#default_value' => variable_get('influxis_container'),
     '#required' => TRUE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_video'] = array(
@@ -122,7 +123,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_video'),
     '#default_value' => variable_get('influxis_video'),
     '#required' => TRUE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_audio'] = array(
@@ -131,7 +132,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_audio'),
     '#default_value' => variable_get('influxis_audio'),
     '#required' => TRUE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_video_bitrate'] = array(
@@ -141,7 +142,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 128,
     '#default_value' => variable_get('influxis_video_bitrate'),
     '#required' => TRUE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_audio_bitrate'] = array(
@@ -151,7 +152,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 128,
     '#default_value' => variable_get('influxis_audio_bitrate'),
     '#required' => TRUE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_min_video_bitrate'] = array(
@@ -161,7 +162,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 128,
     '#default_value' => variable_get('influxis_min_video_bitrate'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_min_audio_bitrate'] = array(
@@ -171,7 +172,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_min_audio_bitrate'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_width'] = array(
@@ -181,7 +182,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_width'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_height'] = array(
@@ -191,7 +192,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_height'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_frame_rate'] = array(
@@ -201,7 +202,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_frame_rate'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_frame_rate_numerator'] = array(
@@ -211,7 +212,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_frame_rate_numerator'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_frame_rate_denominator'] = array(
@@ -221,7 +222,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_frame_rate_denominator'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_audio_channels'] = array(
@@ -231,7 +232,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_audio_channels'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_audio_sample_rate'] = array(
@@ -241,7 +242,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_audio_sample_rate'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_container_mixer'] = array(
@@ -250,7 +251,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_container_mixer'),
     '#default_value' => variable_get('influxis_container_mixer'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_video_encoder'] = array(
@@ -259,7 +260,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_video_encoder'),
     '#default_value' => variable_get('influxis_video_encoder'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['basic']['influxis_audio_encoder'] = array(
@@ -268,17 +269,16 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_audio_encoder'),
     '#default_value' => variable_get('influxis_audio_encoder'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
-
-  //H264 Encoding.
+  // H264 Encoding.
   $form['H264']['influxis_use_h264_settings'] = array(
     '#type' => 'checkbox',
     '#title' => t('Click here to enable the additional H264 settings.'),
     '#default_value' => variable_get('influxis_use_h264_settings'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_h264_profile'] = array(
@@ -287,7 +287,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_h264_profile'),
     '#default_value' => variable_get('influxis_h264_profile'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_level'] = array(
@@ -296,7 +296,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_level'),
     '#default_value' => variable_get('influxis_level'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_min_key_frame_interval'] = array(
@@ -306,7 +306,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_min_key_frame_interval'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_max_key_frame_interval'] = array(
@@ -316,7 +316,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_max_key_frame_interval'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_max_b_frames'] = array(
@@ -326,7 +326,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_max_b_frames'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_decoded_picture_buffer'] = array(
@@ -336,7 +336,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_decoded_picture_buffer'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_no_deblock'] = array(
@@ -344,7 +344,7 @@ function influxis_encoding_settings() {
     '#title' => t('No Deblock'),
     '#default_value' => variable_get('influxis_no_deblock'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_deblock'] = array(
@@ -354,7 +354,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_deblock'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_open_gop'] = array(
@@ -362,7 +362,7 @@ function influxis_encoding_settings() {
     '#title' => t('Open Gop'),
     '#default_value' => variable_get('influxis_open_gop'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_preset'] = array(
@@ -371,7 +371,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_preset'),
     '#default_value' => variable_get('influxis_preset'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_tune'] = array(
@@ -380,7 +380,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_tune'),
     '#default_value' => variable_get('influxis_tune'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_intra_refresh'] = array(
@@ -388,7 +388,7 @@ function influxis_encoding_settings() {
     '#title' => t('Intra Refresh'),
     '#default_value' => variable_get('influxis_intra_refresh'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_b_adapt'] = array(
@@ -397,7 +397,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_b_adapt'),
     '#default_value' => variable_get('influxis_b_adapt'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_b_bias'] = array(
@@ -407,7 +407,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_b_bias'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_b_pyramid'] = array(
@@ -416,7 +416,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_b_pyramid'),
     '#default_value' => variable_get('influxis_b_pyramid'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_constant_rate_factor'] = array(
@@ -426,7 +426,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_constant_rate_factor'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_constant_rate_factor_max'] = array(
@@ -436,7 +436,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_constant_rate_factor_max'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_vbv_max_rate'] = array(
@@ -446,7 +446,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_vbv_max_rate'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_vbv_buf_size'] = array(
@@ -456,7 +456,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_vbv_buf_size'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_vbv_init'] = array(
@@ -466,7 +466,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_vbv_init'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_adaptive_quatization'] = array(
@@ -475,7 +475,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_adaptive_quatization'),
     '#default_value' => variable_get('influxis_adaptive_quatization'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_adaptive_quatization_strength'] = array(
@@ -485,7 +485,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_adaptive_quatization_strength'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_partitions'] = array(
@@ -495,7 +495,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_partitions'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_direct'] = array(
@@ -504,7 +504,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_direct'),
     '#default_value' => variable_get('influxis_direct'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_no_weight_b'] = array(
@@ -512,7 +512,7 @@ function influxis_encoding_settings() {
     '#title' => t('No Wight B'),
     '#default_value' => variable_get('influxis_no_weight_b'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_weight_p'] = array(
@@ -521,7 +521,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_weight_p'),
     '#default_value' => variable_get('influxis_weight_p'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_motion_estimation'] = array(
@@ -530,7 +530,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_motion_estimation'),
     '#default_value' => variable_get('influxis_motion_estimation'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_motion_estimation_range'] = array(
@@ -540,7 +540,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_motion_estimation_range'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_sub_motion_estimation'] = array(
@@ -549,7 +549,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_sub_motion_estimation'),
     '#default_value' => variable_get('influxis_sub_motion_estimation'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_psy_rdo_strength'] = array(
@@ -559,7 +559,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_psy_rdo_strength'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_no_psy_rdo'] = array(
@@ -567,7 +567,7 @@ function influxis_encoding_settings() {
     '#title' => t('No Psy RDO'),
     '#default_value' => variable_get('influxis_no_psy_rdo'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_trellis'] = array(
@@ -576,7 +576,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_trellis'),
     '#default_value' => variable_get('influxis_trellis'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_no_fast_p_skip'] = array(
@@ -584,7 +584,7 @@ function influxis_encoding_settings() {
     '#title' => t('No Fast P Skip'),
     '#default_value' => variable_get('influxis_no_fast_p_skip'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_no_dct_decimate'] = array(
@@ -592,7 +592,7 @@ function influxis_encoding_settings() {
     '#title' => t('No DCT Decimate'),
     '#default_value' => variable_get('influxis_no_dct_decimate'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['H264']['influxis_noise_reduction'] = array(
@@ -602,9 +602,8 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_noise_reduction'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
-
 
   // VPX Encoding.
   $form['VPX']['influxis_use_vp8_settings'] = array(
@@ -612,7 +611,7 @@ function influxis_encoding_settings() {
     '#title' => t('Click here to enable the additional VP8 settings.'),
     '#default_value' => variable_get('influxis_use_vp8_settings'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_min_key_frame_interval'] = array(
@@ -622,7 +621,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_min_key_frame_interval'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_max_key_frame_interval'] = array(
@@ -632,7 +631,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_max_key_frame_interval'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_constant_rate_factor'] = array(
@@ -642,7 +641,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_constant_rate_factor'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_quality_min'] = array(
@@ -652,7 +651,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_quality_min'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_quality_max'] = array(
@@ -662,7 +661,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_quality_max'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_cpu_used'] = array(
@@ -672,7 +671,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_cpu_used'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_rc_look_ahead'] = array(
@@ -682,7 +681,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_rc_look_ahead'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_deadline'] = array(
@@ -691,7 +690,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_deadline'),
     '#default_value' => variable_get('influxis_deadline'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_error_resilient'] = array(
@@ -700,7 +699,7 @@ function influxis_encoding_settings() {
     '#options' => $fms->options('influxis_error_resilient'),
     '#default_value' => variable_get('influxis_error_resilient'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_max_intra_rate'] = array(
@@ -710,7 +709,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_max_intra_rate'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_vpx_profile'] = array(
@@ -720,7 +719,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_vpx_profile'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_sharpness'] = array(
@@ -730,7 +729,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_sharpness'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_noise_reduction'] = array(
@@ -740,7 +739,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_noise_reduction'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   $form['VPX']['influxis_buf_size'] = array(
@@ -750,7 +749,7 @@ function influxis_encoding_settings() {
     '#maxlength' => 5,
     '#default_value' => variable_get('influxis_buf_size'),
     '#required' => FALSE,
-    '#group' => 'encoding'
+    '#group' => 'encoding',
   );
 
   return system_settings_form($form);
@@ -758,7 +757,7 @@ function influxis_encoding_settings() {
 
 
 /**
- * validates settings
+ * Implements hook_validate().
  */
 function influxis_account_settings_validate(&$form, &$form_state) {
   $base_url = $form_state['values']['influxis_baseurl'];
@@ -772,7 +771,8 @@ function influxis_account_settings_validate(&$form, &$form_state) {
 }
 
 /**
- * Submits form
+ * Implements hook_submits().
+ *
  * Password is encrypted before saving to DB
  */
 function influxis_account_settings_submit(&$form, &$form_state) {
@@ -796,13 +796,17 @@ function influxis_account_settings_submit(&$form, &$form_state) {
 
 
 /**
- * Form that displays status of influxis videos and triggers video status change
+ * Implements hook_form().
+ *
+ * Form that displays status of influxis videos and triggers video status change.
  */
-function influxis_status_form($form = array(), $form_state) {
+function influxis_status_form($form_state, $form = array()) {
   $rows = array('#tree' => TRUE);
   $fms = _influxis_();
   $all_complete = TRUE;
-  if ($fms == NULL) return;
+  if ($fms == NULL) {
+    return;
+  }
   // Get all videos.
   $results = _influxis_update_videos();
   $hide_complete = variable_get('influxis_hide_completed');
@@ -816,12 +820,12 @@ function influxis_status_form($form = array(), $form_state) {
 
     if ($file == NULL) {
       $file_name = "File has been deleted or replaced";
-    } 
+    }
     else {
       $file_name = $file->filename;
     }
 
-    $node=node_load($nid);
+    $node = node_load($nid);
 
     // Define node display in form.
     if ($node == NULL) {
@@ -829,52 +833,64 @@ function influxis_status_form($form = array(), $form_state) {
       $node_link = array(
         '#markup' => "Node Deleted",
       );
-    } 
+    }
     else {
       $node_type = $node->type;
-      $node_link = array('data' => array(
-        '#type' => 'link', 
-        '#title' => filter_xss($node->title), 
-        '#href' => 'node/' . $nid, 
-      ));
+      $node_link = array(
+        'data' => array(
+          '#type' => 'link',
+          '#title' => filter_xss($node->title),
+          '#href' => 'node/' . $nid, 
+        ),
+      );
     }
 
-    //Depending if the "hide completed" button is clicked
-    //We skip completed and deleted videos.
-    if ($status != 3) $all_complete = FALSE;
-    if ($status == 3 && $hide_complete) continue;
-    if ($status == 5 && $hide_complete) continue;
+    // Depending if the "hide completed" button is clicked
+    // We skip completed and deleted videos.
+    if ($status != 3) {
+    	$all_complete = FALSE;
+    } elseif ($status == 3 && $hide_complete) {
+      continue;
+    } elseif ($status == 5 && $hide_complete) {
+      continue;
+    }
 
     $rows[] = array(
       'c1' => array(
         '#markup' => $node_type,
       ),
       'c2' => array(
-        '#markup' => $nid
+        '#markup' => $nid,
       ),
       'c3' => $node_link,
       'c4' => array(
         '#markup' => $fid,
       ),
       'c5' => array(
-        '#markup' => $file_name
+        '#markup' => $file_name,
       ),
       'c6' => array(
-        '#markup' => $fms->getProcess($status)
+        '#markup' => $fms->getProcess($status),
       ),
     );
   }
 
   if ($all_complete) {
     $form['influxis_message'] = array(
-      '#markup' => t("There are no videos currently being processed"), 
+      '#markup' => t("There are no videos currently being processed"),
     );
   }
 
   if (!($hide_complete && $all_complete)) {
     $form['influxis_table'] = array(
       '#theme' => 'influxis_form_table',
-      '#header' => array(t('Node Type'), t('Nid'), t('Node Title'), t('Fid'), t('File'), t('Status')),
+      '#header' => array(
+        t('Node Type'),
+      	t('Nid'),
+      	t('Node Title'),
+      	t('Fid'), 
+      	t('File'),
+      	t('Status')),
       'rows' => $rows,
     );
   }
@@ -888,32 +904,32 @@ function influxis_status_form($form = array(), $form_state) {
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Update')
+    '#value' => t('Update'),
   );
   return $form;
 }
 
-/*
- * Refresh video list when submited
+/**
+ * Implements_form_submit().
  */
 function influxis_status_form_submit($form, $form_state) {
   variable_set('influxis_hide_completed', $form_state['values']['influxis_hide_completed']);
   _influxis_update_videos();
 }
 
-/*
- * hook_theme()
+/**
+ * Implements hook_theme().
 */
 function influxis_theme() {
   return array(
     'influxis_form_table' => array(
-    'render element' => 'form'
+      'render element' => 'form'
     )
   );
 }
 
-/*
- * Called by influxis_theme to render admin form
+/**
+ * Called by influxis_theme to render admin form.
 */
 function theme_influxis_form_table(&$variables) {
   // Get the useful values.

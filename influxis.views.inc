@@ -25,8 +25,8 @@ function influxis_views_data() {
         'node' => array(
           'left_field' => 'nid',
           'field' => 'nid',
-      ),
         ),
+      ),
     ),
     'status' => array(
       'title' => t('Status'),

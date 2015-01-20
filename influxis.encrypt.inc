@@ -2,14 +2,15 @@
 
 /**
  * @file
- * File used to encrypt influxis account password
+ * File used to encrypt influxis account password.
  */
+
 class InfluxisEncrypt {
 
   private $key = "thuwre3A";
 
   /**
-   * Proect string
+   * Proect string.
    */
   public function protect($data) {
     if (!$this->checkMcrypt()) {
