@@ -155,7 +155,7 @@ function _influxis_update_video(&$record) {
   if ($record->status == 1) {
     // Send video to be encoded.
     $params = _influxis_get_encoding($record->source);
-    $res = $fms->encode($record->source, $params);
+    $res = $fms->encode($params);
     if (!$res->success) {
       _influxis_error("Could not encode video for " . $record->fid);
       _influxis_update_status(0, $record->fid);

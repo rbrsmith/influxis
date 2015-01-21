@@ -16,7 +16,7 @@ module_load_include('inc', 'influxis', 'influxis.helpers');
  * Implements hook_cron().
  */
 function influxis_cron() {
-  watchdog("influxis", "running influsix cron");
+  watchdog("influxis", "running influis cron");
   _influxis_update_videos();
 }
 
