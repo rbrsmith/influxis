@@ -204,13 +204,13 @@ function _influxis_update_video(&$record) {
   // Video is marked for deletion.
   elseif ($record->status == $status_all['ready to delete']) {
     if ($record->sibling == NULL) {
-      // ERROR
+      // ERROR.
       _influxis_error("Could not remove video from influxis - No sibling for " . $record->fid);
     }
     else {
       $res = _influxis_delete_video($record->fid, $record->sibling);
       if ($res) {
-        // Video is deleted
+        // Video is deleted.
         _influxis_update_status($status_all['deleted'], $record->fid);
         $record->status = $status_all['deleted'];
       }
