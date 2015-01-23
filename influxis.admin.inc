@@ -795,7 +795,7 @@ function influxis_account_settings_submit(&$form, &$form_state) {
 
 
 /**
- * Implements hook_form().
+ * Status admin page.
  *
  * Form that displays status of influxis videos.
  * Also triggers video status change.
@@ -803,6 +803,7 @@ function influxis_account_settings_submit(&$form, &$form_state) {
 function influxis_status_form($form = array()) {
   $rows = array('#tree' => TRUE);
   $fms = _influxis_();
+  // Variable holding if all videos have completed.
   $all_complete = TRUE;
   if ($fms == NULL) {
     return;
@@ -827,7 +828,7 @@ function influxis_status_form($form = array()) {
 
     $node = node_load($nid);
 
-    // Define node display in form.
+    // Display node information for each video.
     if ($node == NULL) {
       $node_type = "";
       $node_link = array(
@@ -857,6 +858,7 @@ function influxis_status_form($form = array()) {
       continue;
     }
 
+    // Array holding the each line of the status table
     $rows[] = array(
       'c1' => array(
         '#markup' => $node_type,
@@ -883,6 +885,8 @@ function influxis_status_form($form = array()) {
     );
   }
 
+  // Determine if table will be displayed.
+  // If it will be then theme table and header.
   if (!($hide_complete && $all_complete)) {
     $form['influxis_table'] = array(
       '#theme' => 'influxis_form_table',

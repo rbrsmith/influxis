@@ -12,10 +12,15 @@ class Influxis {
 
   private $suername;
   private $password;
+  // BaseUrl is actually API
   private $baseUrl;
+  // Video URL is the rtmpt url provided by Influxis.
   private $videoUrl;
+  // If api call is a post or get.
   private $post;
+  // If api call is delete
   private $delete;
+  // Array of video statuses
   private $process;
   static private $instance;
 

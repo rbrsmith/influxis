@@ -34,6 +34,7 @@ function _influxis_() {
  * Send video to influxis for updating.
  */
 function _influxis_upload($fid, $nid) {
+	//Get file's info.
   $file = file_load($fid);
   $file_url = drupal_realpath($file->uri);
 
@@ -41,12 +42,17 @@ function _influxis_upload($fid, $nid) {
   if ($fms == NULL) {
     return;
   }
+  
+  // Two part process.
+  // First get token.
+  // Then send video.
   $file_upload = $fms->uploadFile($file->filename, TRUE);
   if (!$file_upload->success || $file_upload->token == NULL || $file_upload->source == NULL) {
     _influxis_error("Unable to upload video to influxis.  Error in token creation.  Filename: " . $file->filename);
     return;
   }
 
+  // Upload token
   $token_upload = $fms->uploadTokenAsync($file_upload->token, $file_url);
   if (!$token_upload->success) {
     _influxis_error("Unable to upload video to influxis.  Error in file upload.  Filename: " . $file->filename);
@@ -55,6 +61,7 @@ function _influxis_upload($fid, $nid) {
   // Video has been sent to influxis for uploading.
   drupal_set_message(t("Video sent to influxis for uploading"));
 
+  // Insert into influxis table the file info.
   $db_table = variable_get('influxis_db', 'influxis');
   $query = db_insert($db_table)
   ->fields(array(
@@ -151,47 +158,60 @@ function _influxis_update_video(&$record) {
   if ($fms == NULL) {
     return;
   }
+  
+  $status_all = $fms->getProcess();
+  $status_all = array_flip($status_all);
+  
   // Video is being uploaded.
-  if ($record->status == 1) {
+  if ($record->status == $status_all['uploading']) {
     // Send video to be encoded.
     $params = _influxis_get_encoding($record->source);
     $res = $fms->encode($params);
     if (!$res->success) {
+    	// ERROR
       _influxis_error("Could not encode video for " . $record->fid);
-      _influxis_update_status(0, $record->fid);
-      $record->status == 0;
+      _influxis_update_status($status_all['uploading'], $record->fid);
+      // Set error status.
+      $record->status == $status_all['uploading'];
     }
     elseif ($res->uploaded) {
-      _influxis_update_status(2, $record->fid, array(
+    	// Success
+      _influxis_update_status($status_all['encoding'], $record->fid, array(
         'job' => $res->job,
         'media' => $res->media,
         'sibling' => $res->sibling,
       ));
-      $record->status = 2;
+      // Set video to encoding
+      $record->status = $status_all['encoding'];
     }
-    // If video in in encoding state.
   }
-  elseif ($record->status == 2) {
+  // Video is encoding
+  elseif ($record->status == $status_all['encoding']) {
     // Check videos status.
     $res = $fms->getStatus($record->job);
     if (!$res->success) {
+    	// ERROR
       _influxis_error("Could not get status of video for " . $record->fid);
     }
     elseif ($res->isComplete) {
-      _influxis_update_status(3, $record->fid);
-      $record->status = 3;
+    	// Video is ready to go
+      _influxis_update_status($status_all['complete'], $record->fid);
+      // Set status to complete
+      $record->status = $status_all['complete'];
     }
   }
-  elseif ($record->status == 4) {
-    // Video is marked for deletion.
+  // Video is marked for deletion.
+  elseif ($record->status == $status_all['ready to delete']) {
     if ($record->sibling == NULL) {
+    	// ERROR
       _influxis_error("Could not remove video from influxis - No sibling for " . $record->fid);
     }
     else {
       $res = _influxis_delete_video($record->fid, $record->sibling);
       if ($res) {
-        _influxis_update_status(5, $record->fid);
-        $record->status = 5;
+      	// Video is deleted
+        _influxis_update_status($status_all['deleted'], $record->fid);
+        $record->status = $status_all['deleted'];
       }
     }
   }
@@ -199,14 +219,16 @@ function _influxis_update_video(&$record) {
   // TODO put condition so this is not always called (ie deleted videos).
   // Regardless of state if we have a sibling id
   // but no url we'll try to get url.
-  if (isset($record->sibling) && $record->status != 5) {
+  if (isset($record->sibling) && $record->status != $status_all['deleted']) {
     $res = $fms->getSibling($record->sibling);
     if ($res->success) {
       if ($res->deleted) {
-        _influxis_update_status(5, $record->fid);
-        $record->status = 5;
+      	// Video could have been deleted on Influxis' side.
+        _influxis_update_status($status_all['deleted'], $record->fid);
+        $record->status = $status_all['deleted'];
       }
       else {
+      	// Success update the db with URL.
         _influxis_update_url($res->url, "rtmp", $record->fid);
         _influxis_update_url($fms->getVideoUrl() . "/ManagedContent/" . $res->filename, "http", $record->fid);
       }
