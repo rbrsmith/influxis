@@ -159,6 +159,7 @@ function _influxis_update_video(&$record) {
     return;
   }
   
+  // Get status options for a video.
   $status_all = $fms->getProcess();
   $status_all = array_flip($status_all);
   
