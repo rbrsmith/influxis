@@ -858,7 +858,7 @@ function influxis_status_form($form = array()) {
       continue;
     }
 
-    // Array holding the each line of the status table
+    // Array holding the each line of the status table.
     $rows[] = array(
       'c1' => array(
         '#markup' => $node_type,

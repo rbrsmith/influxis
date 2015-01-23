@@ -198,7 +198,7 @@ function influxis_field_update($entity_type, $entity, $field, $instance, $langco
       array("nid", $nid, '='),
     ));
 
-    // Video has changed
+    // Video has changed.
     if (count($results) == 0) {
       $file = file_load($item['fid']);
       file_usage_add($file, 'influxis', 'node', $nid);
@@ -209,12 +209,12 @@ function influxis_field_update($entity_type, $entity, $field, $instance, $langco
   // Need to remove video if new video is uploaded.
   // Or if video remove button is clicked.
   if (!empty($original->{$field['field_name']})) {
-  	// Get removed fids.
+    // Get removed fids.
     $original_fid = $original->{$field['field_name']}[LANGUAGE_NONE][0]['fid'];
     // Check to see if video has been removed.
     if (!in_array($original_fid, $new_fids)) {
       foreach ($original->{$field['field_name']}[$langcode] as $item) {
-      	// Remove fid.
+        // Remove fid.
         if ($item['fid'] == $original_fid) {
           $file = file_load($item['fid']);
           file_usage_delete($file, 'influxis');
