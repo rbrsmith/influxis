@@ -87,11 +87,11 @@ function influxis_permission() {
  * Implements hook_theme().
  */
 function influxis_theme() {
-	return array(
-			'influxis_form_table' => array(
-					'render element' => 'form',
-			),
-	);
+  return array(
+    'influxis_form_table' => array(
+      'render element' => 'form',
+    ),
+  );
 }
 
 /**
