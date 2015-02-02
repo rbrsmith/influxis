@@ -82,3 +82,39 @@ function influxis_permission() {
     ),
   );
 }
+
+/**
+ * Implements hook_theme().
+ */
+function influxis_theme() {
+	return array(
+			'influxis_form_table' => array(
+					'render element' => 'form',
+			),
+	);
+}
+
+/**
+ * Implements hook_help().
+ */
+function influxis_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#influxis':
+      $output = '';
+      $output .= '<h3>' . "INTRODUCTION" . '</h3>';
+      $output .= '<p>' . "The influxis module allows videos to be uploaded to the influxis api using Drupal.  Videos are played back using flowplayer once they have completed the encoding process." . '</p>';
+      $output .= '<h3>' . "REQUIREMENTS" . '</h3>';
+      $output .= '<p>' . "This module requires the following modules:";
+      $output .= '<ul><li>' . "Flowplayer5 (https://www.drupal.org/project/flowplayer5)" . '</li>';
+      $output .= '<li>' . " Password encryption for influxis uses php mcrypt extension to be installed" . '</li>';
+      $output .= "</ul></p>";
+      $output .= '<h3>Configuration</h3>';
+      $output .= '<p>Configure user permissions in Administration => People => Permissions:';
+      $output .= '<ul><li>Administer Influxis:   Users in roles with the "Administer Influxis" permission will see the the influxis configuration page under Administration => Configuration => Media => Influxis .</li>';
+      $output .= '<li>Configure all the encoding settings sent in the request to influxis at Administration => Configuration => Media => Influxis</li>';
+      $output .= '<li>Username, password, API url and video url must be set. </li>';
+      $output .= '<li>Video url is the http version of the RTMP/FMS url in account settings on influxis.com</li></ul><p>';
+
+      return check_markup($output, 'full_html');
+  }
+}

@@ -925,17 +925,6 @@ function influxis_status_form_submit($form, $form_state) {
 }
 
 /**
- * Implements hook_theme().
- */
-function influxis_theme() {
-  return array(
-    'influxis_form_table' => array(
-      'render element' => 'form',
-    ),
-  );
-}
-
-/**
  * Called by influxis_theme to render admin form.
  */
 function theme_influxis_form_table(&$variables) {

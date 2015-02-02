@@ -4,3 +4,4 @@ core = 7.x
 dependencies[] = flowplayer5
 files[] = influxis.encrypt.inc
 files[] = influxis.fms.inc
+configure = admin/config/media/influxis
