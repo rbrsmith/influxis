@@ -234,6 +234,9 @@ function influxis_field_delete($entity_type, &$entity, $field, $instance, $langc
   foreach ($items as $item) {
     $res = _influxis_get_records(array("fid", $item['fid'], "="));
     foreach ($res as $record) {
+			$file = file_load($record->fid);
+      file_usage_delete($file, 'influxis');
+      file_delete($file);
       _influxis_prepare_to_delete($record->fid);
     }
   }
